@@ -3,6 +3,7 @@ import Banner from '../Componenets/Banner';
 import Card from '../Componenets/Card';
 import Jobs from './Jobs';
 import Sidebar from '../sidebar/Sidebar';
+import NewsLetter from '../Componenets/NewsLetter';
 
 const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -64,40 +65,45 @@ const Home = () => {
   };
 
   // category filtering
-  const filteredData = (jobs, selected, query) => {
-    let filteredJobs = jobs;
+ // category filtering
+const filteredData = (jobs, selected, query) => {
+  let filteredJobs = jobs;
 
-    // filtering input items
-    if (query) {
-      filteredJobs = filteredItems;
-    }
+  // filtering input items
+  if (query) {
+    filteredJobs = filteredItems;
+  }
 
-    // category filtering
-    if (selected) {
-      filteredJobs = filteredJobs.filter(
-        ({
-          jobLocation,
-          maxPrice,
-          experienceLevel,
-          salaryType,
-          employmentType,
-          postingDate,
-        }) => {
-          return (
-            jobLocation.toLowerCase() === selected.toLowerCase() ||
-            parseInt(maxPrice) <= parseInt(selected) ||
-            salaryType.toLowerCase() === selected.toLowerCase() ||
-            employmentType.toLowerCase() === selected.toLowerCase()
-          );
-        }
-      );
-    }
+  // category filtering
+  if (selected) {
+    filteredJobs = filteredJobs.filter(
+      ({
+        jobLocation,
+        maxPrice,
+        experienceLevel,
+        salaryType,
+        employmentType,
+        postingDate,
+      }) => {
 
-    // slice the data based on the current page
-    const { startIndex, endIndex } = calculatePageRange();
-    filteredJobs = filteredJobs.slice(startIndex, endIndex); // Corrected the method name here
-    return filteredJobs.map((data, i) => <Card key={i} data={data} />);
-  };
+
+        return (
+          jobLocation.toLowerCase() === selected.toLowerCase() ||
+          parseInt(maxPrice) <= parseInt(selected) ||
+          salaryType.toLowerCase() === selected.toLowerCase() ||
+          employmentType.toLowerCase() === selected.toLowerCase() ||
+          experienceLevel.toLowerCase() === selected.toLowerCase()
+        );
+      }
+    );
+  }
+
+  // slice the data based on the current page
+  const { startIndex, endIndex } = calculatePageRange();
+  filteredJobs = filteredJobs.slice(startIndex, endIndex);
+  return filteredJobs.map((data, i) => <Card key={i} data={data} />);
+};
+
 
   const result = filteredData(jobs, selectedCategory, query);
 
@@ -147,7 +153,7 @@ const Home = () => {
         </div>
 
         {/* right side */}
-        <div className='bg-white p-4 rounded'>Right</div>
+        <div className='bg-white p-4 rounded'><NewsLetter/></div>
       </div>
     </div>
   );
