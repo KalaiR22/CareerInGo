@@ -14,7 +14,7 @@ const Home = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("jobs.json")
+    fetch("http://localhost:3000/all-jobs")
       .then((res) => res.json())
       .then((data) => {
         setJobs(data);
@@ -30,7 +30,7 @@ const Home = () => {
 
   // filter job by title
   const filteredItems = jobs.filter(
-    (job) => job.jobTitle.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    (job) => job && job.jobTitle && job.jobTitle.toLowerCase().indexOf(query.toLowerCase()) !== -1
   );
 
   // radio filtering
@@ -65,45 +65,41 @@ const Home = () => {
   };
 
   // category filtering
- // category filtering
-const filteredData = (jobs, selected, query) => {
-  let filteredJobs = jobs;
+  const filteredData = (jobs, selected, query) => {
+    let filteredJobs = jobs;
 
-  // filtering input items
-  if (query) {
-    filteredJobs = filteredItems;
-  }
+    // filtering input items
+    if (query) {
+      filteredJobs = filteredItems;
+    }
 
-  // category filtering
-  if (selected) {
-    filteredJobs = filteredJobs.filter(
-      ({
-        jobLocation,
-        maxPrice,
-        experienceLevel,
-        salaryType,
-        employmentType,
-        postingDate,
-      }) => {
-
-
-        return (
-          jobLocation.toLowerCase() === selected.toLowerCase() ||
-          parseInt(maxPrice) <= parseInt(selected) ||
-          salaryType.toLowerCase() === selected.toLowerCase() ||
-          employmentType.toLowerCase() === selected.toLowerCase() ||
-          experienceLevel.toLowerCase() === selected.toLowerCase()
-        );
-      }
+    // category filtering
+    if (selected) {
+      filteredJobs = filteredJobs.filter(
+        ({
+          jobLocation,
+          maxPrice,
+          experienceLevel,
+          salaryType,
+          employmentType,
+          postingDate,
+        }) => {
+         return (
+        jobLocation && jobLocation.toLowerCase() === selected.toLowerCase() ||
+        maxPrice && parseInt(maxPrice) <= parseInt(selected) ||
+        salaryType && salaryType.toLowerCase() === selected.toLowerCase() ||
+        employmentType && employmentType.toLowerCase() === selected.toLowerCase() ||
+        experienceLevel && experienceLevel.toLowerCase() === selected.toLowerCase()
     );
-  }
+        }
+      );
+    }
 
-  // slice the data based on the current page
-  const { startIndex, endIndex } = calculatePageRange();
-  filteredJobs = filteredJobs.slice(startIndex, endIndex);
-  return filteredJobs.map((data, i) => <Card key={i} data={data} />);
-};
-
+    // slice the data based on the current page
+    const { startIndex, endIndex } = calculatePageRange();
+    filteredJobs = filteredJobs.slice(startIndex, endIndex);
+    return filteredJobs.map((data, i) => <Card key={i} data={data} />);
+  };
 
   const result = filteredData(jobs, selectedCategory, query);
 
@@ -135,21 +131,24 @@ const filteredData = (jobs, selected, query) => {
           {result.length > 0 ? (
             <div className='flex justify-center mt-4 space-x-8'>
               <button 
-              onClick={prevPage}
-              disabled={currentPage===1}
-              className='hover:underline'
-              >Previous</button>
+                onClick={prevPage}
+                disabled={currentPage===1}
+                className='hover:underline'
+              >
+                Previous
+              </button>
               <span className='mx-2'>
                 Page {currentPage} of {Math.ceil(filteredItems.length / itemsPerPage)}
               </span>
               <button 
-              onClick={nextPage}
-              disabled={currentPage === Math.ceil(filteredItems.length/itemsPerPage)}
-              className='hover:underline'
-              >Next</button>
+                onClick={nextPage}
+                disabled={currentPage === Math.ceil(filteredItems.length/itemsPerPage)}
+                className='hover:underline'
+              >
+                Next
+              </button>
             </div>
-          ) : ""
-        }
+          ) : ""}
         </div>
 
         {/* right side */}
