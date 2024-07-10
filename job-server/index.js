@@ -10,8 +10,7 @@ app.use(express.json())
 app.use(cors())
 
 
-//username:kalaivaniravi2208
-// password:KJ4mQpm79nU8sxrZ
+
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@mernjob.cmk1ku9.mongodb.net/?retryWrites=true&w=majority`;

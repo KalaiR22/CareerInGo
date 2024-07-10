@@ -1,5 +1,5 @@
 import React from 'react'
-import InputFeild from '../Componenets/InputFeild'
+import InputFeild from '../Componenets/InputFeild';
 
 const JobPosting = ({handleChange}) => {
     const now = new Date();

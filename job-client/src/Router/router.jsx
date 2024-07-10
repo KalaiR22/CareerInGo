@@ -1,3 +1,50 @@
+// import React from "react";
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import App from "../App";
+// import JobOffer from "../pages/JobOffer";
+// import Students from "../pages/Students";
+// import Dashboard from "../pages/Dashboard";
+// import RequestForm from "../pages/RequestForm";
+// import Login from "../pages/Login";
+// import Header from "../components/Header";
+// import StudentForm from "../pages/StudentForm";
+// import CompanyForm from "../pages/CompanyForm";
+// import CompanyUpdate from "../pages/CompanyUpdate";
+// import StudentUpdate from "../pages/StudentUpdate";
+// import StudentSelected from "../pages/StudentSelected";
+// import ResumeSubmitted from "../pages/ResumeSubmitted";
+// import CompanyFormUpdate from "../pages/CompanyFormUpdate";
+
+// const Routes = () => {
+//   return (
+//     <Router>
+//       <App>
+//         <Routes>
+//           <Route path="/" element={<JobOffer />} />
+//           <Route path="/candidates" element={<Students />} />
+//           <Route path="/studentdetails" element={<StudentForm />} />
+//           <Route path="/companydetails" element={<CompanyForm />} />
+//           <Route path="/requestaccount" element={<RequestForm />} />
+//           <Route path="/companyupdate" element={<CompanyUpdate />} />
+//           <Route path="/studentupdate" element={<StudentUpdate />} />
+//           <Route path="/Studentselected" element={<StudentSelected />} />
+//           <Route path="/resumesubmitted" element={<ResumeSubmitted />} />
+//           <Route path="/login" element={<Login />} />
+//           <Route
+//             path="/edit-job/:id"
+//             element={<CompanyFormUpdate />}
+//             loader={({ params }) =>
+//               fetch(`http://localhost:3000/all-jobs/${params.id}`)
+//             }
+//           />
+//         </Routes>
+//       </App>
+//     </Router>
+//   );
+// };
+
+// export default Routes;
+
 import {
   createBrowserRouter,
   
