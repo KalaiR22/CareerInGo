@@ -13,18 +13,19 @@ const CreateJob = () => {
   const onSubmit = (data) =>{
     data.skills = selectedOptions;
 
-    fetch("http://localhost:3000/post-job",
-    {
-      method:"POST",
-      headers:{'content-type':'application/json'},
-      body: JSON.stringify(data)
-    }).then(res => res.json()).then((result)=>{
-      console.log(result)
-        if(result.acknowledged === true){
-        alert("Job Posted Successfully!!!")
-   }
-      reset()
+    fetch("https://job-portal-api-tau.vercel.app/post-job", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(data),
     })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        if (result.acknowledged === true) {
+          alert("Job Posted Successfully!!!");
+        }
+        reset();
+      });
   
    // console.log(data)
   }

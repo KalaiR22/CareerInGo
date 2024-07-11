@@ -14,7 +14,7 @@ const Home = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("http://localhost:3000/all-jobs")
+    fetch("https://job-portal-api-tau.vercel.app/all-jobs")
       .then((res) => res.json())
       .then((data) => {
         setJobs(data);

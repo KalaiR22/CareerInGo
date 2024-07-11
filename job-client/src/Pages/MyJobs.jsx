@@ -8,13 +8,14 @@ const [isLoading, setIsLoading] = useState(true);
 useEffect (() =>{
 setIsLoading(true) 
     
-fetch( `http://localhost:3000/myJobs/kalaivaniravi2208@gmail.com`)
-.then((res)=>res.json())
-.then((data)=>{
-    setJobs(data)
+fetch(
+  `https://job-portal-api-tau.vercel.app/myJobs/kalaivaniravi2208@gmail.com`
+)
+  .then((res) => res.json())
+  .then((data) => {
+    setJobs(data);
     setIsLoading(false);
-    
-})
+  });
 },[searchText])
 
 const handleSearch = () =>{
