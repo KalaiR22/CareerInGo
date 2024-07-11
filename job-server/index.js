@@ -10,10 +10,7 @@ app.use(cors());
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
-const uri = process.env.DB_USER && process.env.DB_PASS 
-  ? `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@mernjob.cmk1ku9.mongodb.net/?retryWrites=true&w=majority` 
-  : null;
-
+const uri = process.env.MONGO_URL
 if (!uri) {
   console.error('MongoDB URI is not set. Please check your environment variables.');
   process.exit(1);
