@@ -9,7 +9,15 @@ app.use(express.json());
 app.use(cors());
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@mernjob.cmk1ku9.mongodb.net/?retryWrites=true&w=majority`;
+
+const uri = process.env.DB_USER && process.env.DB_PASS 
+  ? `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@mernjob.cmk1ku9.mongodb.net/?retryWrites=true&w=majority` 
+  : null;
+
+if (!uri) {
+  console.error('MongoDB URI is not set. Please check your environment variables.');
+  process.exit(1);
+}
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -27,7 +35,7 @@ async function run() {
     const db = client.db("mernJobPortal");
     const jobsCollection = db.collection('demoJobs');
 
-    // Post a job
+    // Define routes
     app.post('/post-job', async (req, res) => {
       const body = req.body;
       body.createAt = new Date();
@@ -35,46 +43,42 @@ async function run() {
         const result = await jobsCollection.insertOne(body);
         res.status(200).send(result);
       } catch (error) {
-        console.error("Error inserting job:", error);
+        console.error("Error inserting job:", error.message, error.stack);
         res.status(500).send({ message: "Internal Server Error" });
       }
     });
 
-    // Get all jobs
     app.get('/all-jobs', async (req, res) => {
       try {
         const jobs = await jobsCollection.find({}).toArray();
         res.send(jobs);
       } catch (error) {
-        console.error("Error fetching jobs:", error);
+        console.error("Error fetching jobs:", error.message, error.stack);
         res.status(500).send({ message: "Internal Server Error" });
       }
     });
 
-    // Get job by ID
     app.get('/all-jobs/:id', async (req, res) => {
       const id = req.params.id;
       try {
         const job = await jobsCollection.findOne({ _id: new ObjectId(id) });
         res.send(job);
       } catch (error) {
-        console.error("Error fetching job by ID:", error);
+        console.error("Error fetching job by ID:", error.message, error.stack);
         res.status(500).send({ message: "Internal Server Error" });
       }
     });
 
-    // Get jobs by email
     app.get('/myJobs/:email', async (req, res) => {
       try {
         const jobs = await jobsCollection.find({ postedBy: req.params.email }).toArray();
         res.send(jobs);
       } catch (error) {
-        console.error("Error fetching jobs by email:", error);
+        console.error("Error fetching jobs by email:", error.message, error.stack);
         res.status(500).send({ message: "Internal Server Error" });
       }
     });
 
-    // Delete a job
     app.delete('/job/:id', async (req, res) => {
       const id = req.params.id;
       try {
@@ -82,12 +86,11 @@ async function run() {
         const result = await jobsCollection.deleteOne(filter);
         res.send(result);
       } catch (error) {
-        console.error("Error deleting job:", error);
+        console.error("Error deleting job:", error.message, error.stack);
         res.status(500).send({ message: "Internal Server Error" });
       }
     });
 
-    // Update a job
     app.patch("/update-job/:id", async (req, res) => {
       const id = req.params.id;
       const jobData = req.body;
@@ -98,7 +101,7 @@ async function run() {
         const result = await jobsCollection.updateOne(filter, updateDoc, options);
         res.send(result);
       } catch (error) {
-        console.error("Error updating job:", error);
+        console.error("Error updating job:", error.message, error.stack);
         res.status(500).send({ message: "Internal Server Error" });
       }
     });
@@ -106,7 +109,7 @@ async function run() {
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
+    console.error("Error connecting to MongoDB:", error.message, error.stack);
   }
 }
 
